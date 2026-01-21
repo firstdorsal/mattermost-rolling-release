@@ -21,6 +21,7 @@ RUN apk add --no-cache \
     && rm -rf /var/cache/apk/*
 
 ARG MATTERMOST_VERSION=master
+ARG BUILD_ID=ghcr.io/firstdorsal/mattermost-rolling-release
 
 WORKDIR /src
 
@@ -30,7 +31,7 @@ RUN git clone --depth 1 --branch "${MATTERMOST_VERSION}" \
 WORKDIR /src/server
 
 RUN make setup-go-work
-RUN make build-linux BUILD_NUMBER=dev
+RUN make build-linux BUILD_NUMBER="${BUILD_ID}"
 RUN strip /src/server/bin/mattermost /src/server/bin/mmctl
 
 # =============================================================================
