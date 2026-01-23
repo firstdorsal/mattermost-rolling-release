@@ -59,7 +59,12 @@ volumes:
 
 | Path | Purpose |
 |------|---------|
-| `/bitnami/mongodb` | Data, config, and logs |
+| `/bitnami/mongodb` | Data directory (actual data in `/bitnami/mongodb/data/db`) |
+
+## Important Notes
+
+- **Initialization is one-time only**: The root user is created on first startup. Changing `MONGODB_ROOT_USER` or `MONGODB_ROOT_PASSWORD` after initial setup will not update existing credentials. To reset, delete the volume and restart.
+- **MONGODB_ROOT_PASSWORD is required**: The container will fail to start if this variable is not set.
 
 ## Why This Image?
 

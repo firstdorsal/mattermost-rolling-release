@@ -2,12 +2,22 @@
 
 A collection of container images built from source, automatically updated with new releases.
 
+## Goals
+
+1. **Minimal size** - Images as small as possible:
+   - Prefer `FROM scratch` with statically linked binaries when feasible
+   - Always provide an Alpine-based fallback (tagged `-debug`) for debugging and shell access
+   - Use multi-stage builds and stripped binaries
+2. **Always fresh** - Automatic builds when upstream releases new versions (checked every 6 hours)
+3. **Rolling releases** - Images designed for auto-updating deployments with consistent tagging
+4. **Enhanced functionality** - Useful features and addons included where beneficial (e.g., pre-configured plugins, optimized defaults)
+
 ## Available Images
 
-| Image | Description | Workflow |
-|-------|-------------|----------|
-| [mattermost](./images/mattermost/) | Alpine-based Mattermost server | [![Mattermost](https://github.com/firstdorsal/oci-images/actions/workflows/mattermost.yml/badge.svg)](https://github.com/firstdorsal/oci-images/actions/workflows/mattermost.yml) |
-| [mongodb](./images/mongodb/) | Bitnami-compatible MongoDB | [![MongoDB](https://github.com/firstdorsal/oci-images/actions/workflows/mongodb.yml/badge.svg)](https://github.com/firstdorsal/oci-images/actions/workflows/mongodb.yml) |
+| Image | Tag | Description | Workflow |
+|-------|-----|-------------|----------|
+| [mattermost](./images/mattermost/) | `ghcr.io/firstdorsal/mattermost-rolling-release-alpine` | Alpine-based Mattermost server | [![Mattermost](https://github.com/firstdorsal/oci-images/actions/workflows/mattermost.yml/badge.svg)](https://github.com/firstdorsal/oci-images/actions/workflows/mattermost.yml) |
+| [mongodb](./images/mongodb/) | `ghcr.io/firstdorsal/mongodb-bitnami-compatible` | Bitnami-compatible MongoDB | [![MongoDB](https://github.com/firstdorsal/oci-images/actions/workflows/mongodb.yml/badge.svg)](https://github.com/firstdorsal/oci-images/actions/workflows/mongodb.yml) |
 
 ## Adding a New Image
 

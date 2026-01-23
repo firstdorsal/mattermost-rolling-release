@@ -30,9 +30,11 @@ jobs:
     steps:
       - name: Get MongoDB version
         id: get-version
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
         run: |
-          if [[ -n "${{ github.event.inputs.version }}" ]]; then
-            VERSION="${{ github.event.inputs.version }}"
+          if [[ -n "$INPUT_VERSION" ]]; then
+            VERSION="$INPUT_VERSION"
           else
             # Get latest MongoDB 8.x version from Docker Hub
             VERSION=$(curl -sL "https://hub.docker.com/v2/repositories/library/mongo/tags?page_size=100&ordering=last_updated" \
@@ -42,16 +44,29 @@ jobs:
               | tail -1)
           fi
 
+          # Validate version is not empty
+          if [[ -z "$VERSION" ]]; then
+            echo "ERROR: Failed to determine MongoDB version"
+            exit 1
+          fi
+
+          # Validate version format
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "ERROR: Invalid version format: $VERSION (expected X.Y.Z)"
+            exit 1
+          fi
+
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "version_tag=${VERSION}" >> $GITHUB_OUTPUT
           echo "MongoDB version: ${VERSION}"
 
       - name: Check if image already exists
         id: check
+        env:
+          VERSION_TAG: ${{ steps.get-version.outputs.version_tag }}
+          FORCE_BUILD: ${{ github.event.inputs.force_build }}
         run: |
-          VERSION_TAG="${{ steps.get-version.outputs.version_tag }}"
-
-          if [[ "${{ github.event.inputs.force_build }}" == "true" ]]; then
+          if [[ "$FORCE_BUILD" == "true" ]]; then
             echo "should_build=true" >> $GITHUB_OUTPUT
             echo "Force build requested"
             exit 0

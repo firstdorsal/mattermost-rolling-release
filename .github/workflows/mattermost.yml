@@ -30,12 +30,20 @@ jobs:
     steps:
       - name: Get Mattermost version
         id: get-version
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
         run: |
-          if [[ -n "${{ github.event.inputs.version }}" ]]; then
-            VERSION="${{ github.event.inputs.version }}"
+          if [[ -n "$INPUT_VERSION" ]]; then
+            VERSION="$INPUT_VERSION"
           else
             # Get latest release tag from Mattermost repo
             VERSION=$(curl -sL https://api.github.com/repos/mattermost/mattermost/releases/latest | jq -r '.tag_name')
+          fi
+
+          # Validate version is not empty
+          if [[ -z "$VERSION" ]] || [[ "$VERSION" == "null" ]]; then
+            echo "ERROR: Failed to determine Mattermost version"
+            exit 1
           fi
 
           # Ensure version starts with 'v'
@@ -52,10 +60,11 @@ jobs:
 
       - name: Check if image already exists
         id: check
+        env:
+          VERSION_TAG: ${{ steps.get-version.outputs.version_tag }}
+          FORCE_BUILD: ${{ github.event.inputs.force_build }}
         run: |
-          VERSION_TAG="${{ steps.get-version.outputs.version_tag }}"
-
-          if [[ "${{ github.event.inputs.force_build }}" == "true" ]]; then
+          if [[ "$FORCE_BUILD" == "true" ]]; then
             echo "should_build=true" >> $GITHUB_OUTPUT
             echo "Force build requested"
             exit 0
