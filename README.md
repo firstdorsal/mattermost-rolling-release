@@ -6,11 +6,11 @@ A collection of container images built from source, automatically updated with n
 
 | Image | Description | Workflow |
 |-------|-------------|----------|
-| [mattermost](./mattermost/) | Alpine-based Mattermost server | [![Mattermost](https://github.com/firstdorsal/oci-images/actions/workflows/mattermost.yml/badge.svg)](https://github.com/firstdorsal/oci-images/actions/workflows/mattermost.yml) |
+| [mattermost](./images/mattermost/) | Alpine-based Mattermost server | [![Mattermost](https://github.com/firstdorsal/oci-images/actions/workflows/mattermost.yml/badge.svg)](https://github.com/firstdorsal/oci-images/actions/workflows/mattermost.yml) |
 
 ## Adding a New Image
 
-1. Create a new directory for the image (e.g., `myapp/`)
+1. Create a new directory under `images/` (e.g., `images/myapp/`)
 2. Add a `Dockerfile` in the directory
 3. Add a `README.md` with usage instructions
 4. Create a workflow in `.github/workflows/<image-name>.yml`

@@ -5,13 +5,13 @@ Alpine-based Mattermost Docker image built from source, automatically updated wi
 ## Usage
 
 ```bash
-docker pull ghcr.io/firstdorsal/oci-images/mattermost:latest
+docker pull ghcr.io/firstdorsal/mattermost-rolling-release-alpine:latest
 ```
 
 Or use a specific version:
 
 ```bash
-docker pull ghcr.io/firstdorsal/oci-images/mattermost:11.3.0
+docker pull ghcr.io/firstdorsal/mattermost-rolling-release-alpine:11.3.0
 ```
 
 ## Docker Compose Example
@@ -28,7 +28,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   mattermost:
-    image: ghcr.io/firstdorsal/oci-images/mattermost:latest
+    image: ghcr.io/firstdorsal/mattermost-rolling-release-alpine:latest
     depends_on:
       - postgres
     environment:
